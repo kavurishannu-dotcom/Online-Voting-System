@@ -1,0 +1,26 @@
+{% extends 'base.html' %}{% block content %}<div class="grid two">
+<section class="card">
+    <h1>Feedback</h1>
+    <form method="post">
+        <label>Rating<select name="rating">
+            <option>5</option>
+            <option>4</option>
+            <option>3</option>
+            <option>2</option>
+            <option>1</option>
+        </select>
+    </label>
+    <label>Category<input name="category" placeholder="Usability">
+    </label>
+    <label>Message<textarea name="message" required>
+    </textarea>
+</label>
+<button class="btn">Submit</button>
+</form>
+</section>
+<section>
+    <h2>My Feedback</h2>{% for r in rows %}<div class="card">
+        <b>{{r.rating}}/5 · {{r.category}}</b>
+        <p>{{r.message}}</p>
+    </div>{% endfor %}</section>
+</div>{% endblock %}

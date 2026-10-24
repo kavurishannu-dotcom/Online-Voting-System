@@ -1,0 +1,26 @@
+{% extends 'base.html' %}{% block content %}<div class="grid two">
+<section class="card">
+    <h1>Profile</h1>
+    <form method="post">
+        <label>Name<input name="name" value="{{user.name}}">
+        </label>
+        <label>Phone<input name="phone" value="{{user.phone or ''}}">
+        </label>
+        <label>Language<select name="language">{% for x in ['English','Telugu','Hindi'] %}<option {% if user.language==x %}selected{% endif %}>{{x}}</option>{% endfor %}</select>
+        </label>
+        <label>
+            <input type="checkbox" name="accessibility" {% if user.accessibility %}checked{% endif %}> Accessibility mode</label>
+            <button class="btn">Save</button>
+        </form>
+    </section>
+    <section class="card">
+        <h2>Change Password</h2>
+        <form method="post" action="{{url_for('change_password')}}">
+            <label>Current<input name="old_password" type="password">
+            </label>
+            <label>New<input name="new_password" type="password" minlength="8">
+            </label>
+            <button class="btn">Change</button>
+        </form>
+    </section>
+</div>{% endblock %}

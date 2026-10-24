@@ -1,0 +1,9 @@
+{% extends 'base.html' %}{% block content %}<div class="card">
+<h1>Nominate for {{e.title}}</h1>
+<form method="post">
+    <label>Manifesto<textarea name="manifesto" required placeholder="Your goals and commitments">
+    </textarea>
+</label>
+<button class="btn">Submit Nomination</button>
+</form>
+</div>{% endblock %}

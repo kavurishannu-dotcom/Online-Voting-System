@@ -1,0 +1,5 @@
+{% extends 'base.html' %}{% block content %}<h1>Feedback Management</h1>{% for r in rows %}<div class="card">
+<b>{{r.name or 'Unknown'}} · {{r.rating}}/5 · {{r.category}}</b>
+<p>{{r.message}}</p>
+<small>{{r.created_at}}</small>
+</div>{% endfor %}{% endblock %}

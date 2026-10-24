@@ -1,0 +1,19 @@
+{% extends 'base.html' %}{% block content %}<div class="grid two">
+<section class="card">
+    <h1>Complaints</h1>
+    <form method="post">
+        <label>Subject<input name="subject" required>
+        </label>
+        <label>Message<textarea name="message" required>
+        </textarea>
+    </label>
+    <button class="btn">Submit Complaint</button>
+</form>
+</section>
+<section>
+    <h2>My Complaints</h2>{% for r in rows %}<div class="card">
+        <b>{{r.subject}}</b>
+        <span class="badge">{{r.status}}</span>
+        <p>{{r.message}}</p>
+    </div>{% endfor %}</section>
+</div>{% endblock %}

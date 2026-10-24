@@ -1,0 +1,16 @@
+{% extends 'base.html' %}{% block content %}<div class="card">
+<h1>System Settings</h1>
+<form method="post">
+    <label>Site Name<input name="site_name" value="{{settings.get('site_name','VoteSecure')}}">
+    </label>
+    <label>Default Language<select name="default_language">
+        <option>English</option>
+        <option>Telugu</option>
+        <option>Hindi</option>
+    </select>
+</label>
+<label>Election Notice<textarea name="election_notice">{{settings.get('election_notice','')}}</textarea>
+</label>
+<button class="btn">Save Settings</button>
+</form>
+</div>{% endblock %}

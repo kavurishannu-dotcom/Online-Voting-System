@@ -1,0 +1,11 @@
+{% extends 'base.html' %}{% block content %}<h1>Results · {{e.title}}</h1>
+<div class="card">{% for r in rows %}<div class="result">
+    <div>
+        <b>{{r.candidate_name}}</b>
+        <small>{{r.votes}} vote(s)</small>
+    </div>
+    <div class="bar">
+        <span style="width:{{(r.votes / (rows|sum(attribute='votes') or 1))*100}}%">
+        </span>
+    </div>
+</div>{% else %}<p>No results.</p>{% endfor %}</div>{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}{% block content %}<h1>Complaint Management</h1>{% for r in rows %}<div class="card">
+<div class="page-head">
+    <div>
+        <b>{{r.subject}}</b>
+        <small>{{r.name or 'Unknown'}} · {{r.created_at}}</small>
+        <p>{{r.message}}</p>
+    </div>
+    <form method="post" action="{{url_for('complaint_status',cid=r.id)}}">
+        <select name="status">
+            <option {% if r.status=='Open' %}selected{% endif %}>Open</option>
+            <option {% if r.status=='In Progress' %}selected{% endif %}>In Progress</option>
+            <option {% if r.status=='Resolved' %}selected{% endif %}>Resolved</option>
+        </select>
+        <button class="btn small">Save</button>
+    </form>
+</div>
+</div>{% endfor %}{% endblock %}

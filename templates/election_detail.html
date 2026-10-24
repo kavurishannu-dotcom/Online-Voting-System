@@ -1,0 +1,13 @@
+{% extends 'base.html' %}{% block content %}<div class="page-head">
+<div>
+    <span class="badge">{{e.status}}</span>
+    <h1>{{e.title}}</h1>
+    <p>{{e.description}}</p>
+</div>{% if session.role=='voter' and e.status=='Active' and not voted %}<a class="btn" href="{{url_for('vote',eid=e.id)}}">Cast Vote</a>{% endif %}</div>
+<section class="card">
+    <h2>Approved Candidates</h2>
+    <div class="grid two">{% for n in noms %}<div class="candidate">
+        <h3>{{n.candidate_name}}</h3>
+        <p>{{n.manifesto}}</p>
+    </div>{% else %}<p>No approved candidates yet.</p>{% endfor %}</div>
+</section>{% if session.role=='candidate' and e.status in ['Upcoming','Active'] %}<a class="btn" href="{{url_for('nominate',eid=e.id)}}">Submit Nomination</a>{% endif %}{% if e.status in ['Closed','Result Published','Archived'] %}<a class="btn ghost" href="{{url_for('results',eid=e.id)}}">View Results</a>{% endif %}{% endblock %}

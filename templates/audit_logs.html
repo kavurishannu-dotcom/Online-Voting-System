@@ -1,0 +1,20 @@
+{% extends 'base.html' %}{% block content %}<div class="page-head">
+<h1>Audit Logs</h1>
+<a class="btn" href="{{url_for('export_csv',kind='audit')}}">Export CSV</a>
+</div>
+<div class="table-wrap">
+    <table>
+        <tr>
+            <th>Time</th>
+            <th>User</th>
+            <th>Action</th>
+            <th>Entity</th>
+            <th>IP</th>
+        </tr>{% for r in rows %}<tr>
+        <td>{{r.created_at}}</td>
+        <td>{{r.name or '-'}}</td>
+        <td>{{r.action}}</td>
+        <td>{{r.entity}} #{{r.entity_id or ''}}</td>
+        <td>{{r.ip_address}}</td>
+    </tr>{% endfor %}</table>
+</div>{% endblock %}

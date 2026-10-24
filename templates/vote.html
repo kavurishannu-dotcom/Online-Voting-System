@@ -1,0 +1,13 @@
+{% extends 'base.html' %}{% block content %}<div class="card">
+<p class="eyebrow">SECRET BALLOT</p>
+<h1>{{e.title}}</h1>
+<p>Select one candidate. Your account can vote only once in this election.</p>
+<form method="post">{% for n in noms %}<label class="choice">
+    <input type="radio" name="candidate_id" value="{{n.candidate_id}}" required>
+    <span>
+        <b>{{n.candidate_name}}</b>
+        <small>{{n.manifesto}}</small>
+    </span>
+</label>{% endfor %}<button class="btn" onclick="return confirm('Submit your vote? This action cannot be undone.')">Submit Vote</button>
+</form>
+</div>{% endblock %}

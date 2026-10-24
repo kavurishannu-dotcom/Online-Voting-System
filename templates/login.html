@@ -1,0 +1,14 @@
+{% extends 'base.html' %}{% block title %}Login{% endblock %}{% block content %}<div class="auth card">
+<h1>Login</h1>
+<form method="post">
+    <label>Email<input name="email" type="email" required>
+    </label>
+    <label>Password<input name="password" type="password" required>
+    </label>
+    <button class="btn">Login</button>
+</form>
+<p>
+    <a href="{{url_for('forgot_password')}}">Forgot password?</a> · <a href="{{url_for('register')}}">Create account</a>
+</p>
+<hr>
+</div>{% endblock %}

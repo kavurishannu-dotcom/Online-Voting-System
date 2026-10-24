@@ -1,0 +1,26 @@
+{% extends 'base.html' %}{% block title %}Welcome · VoteSecure{% endblock %}{% block content %}<section class="hero">
+<div>
+    <p class="eyebrow">DIGITAL ELECTION PLATFORM</p>
+    <h1>Simple, secure and transparent online voting.</h1>
+    <p>Manage voters, candidates, nominations, elections, ballots, notifications, feedback, complaints, analytics and audit logs from one system.</p>
+    <a class="btn" href="{{url_for('register')}}">Get Started</a>
+    <a class="btn ghost" href="{{url_for('how')}}">How It Works</a>
+</div>
+<div class="hero-card">🔐<h3>Security-first design</h3>
+    <p>Password hashing · role-based access · duplicate-vote prevention · audit trails</p>
+</div>
+</section>
+<section class="grid three">
+    <article>
+        <b>👤 Voters</b>
+        <p>Register, verify, view elections, vote once and keep a receipt.</p>
+    </article>
+    <article>
+        <b>🗳️ Candidates</b>
+        <p>Submit nominations, manage manifestos and view election information.</p>
+    </article>
+    <article>
+        <b>⚙️ Admin</b>
+        <p>Create elections, approve nominations, publish results and monitor activity.</p>
+    </article>
+</section>{% endblock %}

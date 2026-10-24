@@ -1,0 +1,5 @@
+{% extends 'base.html' %}{% block title %}How It Works{% endblock %}{% block content %}<h1>How It Works</h1>
+<div class="steps">{% for x in ['Open website','Register / Login','Verify account','Role dashboard','Election / nomination activity','Cast vote or manage election','Close election','Publish results','Archive and audit'] %}<div class="step">
+    <strong>{{loop.index}}</strong>
+    <span>{{x}}</span>
+</div>{% endfor %}</div>{% endblock %}

@@ -1,0 +1,9 @@
+{% extends 'base.html' %}{% block content %}<div class="center card">
+<div class="success-icon">✓</div>
+<h1>Vote Recorded</h1>
+<p>Keep your receipt code for your records.</p>
+<code>{{receipt}}</code>
+<br>
+<br>
+<a class="btn" href="{{url_for('voter_dashboard')}}">Back to Dashboard</a>
+</div>{% endblock %}

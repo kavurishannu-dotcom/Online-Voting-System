@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Online Voting System{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    {% if current_user %}
+        <div class="app-layout">
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-brand">
+                    <a href="{{ url_for('dashboard') }}" class="brand">Vote<span>Secure</span></a>
+                    <p>Online Voting System</p>
+                </div>
+
+                <div class="sidebar-user">
+                    <div class="avatar">{{ session.name[:1]|upper }}</div>
+                    <div>
+                        <strong>{{ session.name }}</strong>
+                        <small>{{ session.role|capitalize }}</small>
+                    </div>
+                </div>
+
+                <nav class="sidebar-nav" aria-label="Dashboard navigation">
+                    <p class="nav-section-title">MAIN</p>
+
+                    <a class="{% if request.endpoint in ['dashboard', 'voter_dashboard', 'candidate_dashboard', 'admin_dashboard'] %}active{% endif %}" href="{{ url_for('dashboard') }}">
+                        <span>▦</span> Dashboard
+                    </a>
+
+                    <a class="{% if request.endpoint in ['elections', 'election_detail', 'vote', 'confirmation'] %}active{% endif %}" href="{{ url_for('elections') }}">
+                        <span>◈</span> Elections
+                    </a>
+
+                    {% if session.role == 'candidate' %}
+                        <a class="{% if request.endpoint == 'nominate' %}active{% endif %}" href="{{ url_for('elections') }}">
+                            <span>✦</span> Nominations
+                        </a>
+                    {% endif %}
+
+                    <a class="{% if request.endpoint == 'notifications' %}active{% endif %}" href="{{ url_for('notifications') }}">
+                        <span>◔</span> Notifications
+                        {% if unread_notifications %}
+                            <b class="nav-count">{{ unread_notifications }}</b>
+                        {% endif %}
+                    </a>
+
+                    <p class="nav-section-title">SUPPORT</p>
+
+                    <a class="{% if request.endpoint == 'feedback' %}active{% endif %}" href="{{ url_for('feedback') }}">
+                        <span>♡</span> Feedback
+                    </a>
+
+                    <a class="{% if request.endpoint == 'complaints' %}active{% endif %}" href="{{ url_for('complaints') }}">
+                        <span>!</span> Complaints
+                    </a>
+
+                    <p class="nav-section-title">ACCOUNT</p>
+
+                    <a class="{% if request.endpoint == 'profile' %}active{% endif %}" href="{{ url_for('profile') }}">
+                        <span>◎</span> Profile
+                    </a>
+
+                    {% if session.role == 'admin' %}
+                        <p class="nav-section-title">ADMINISTRATION</p>
+
+                        <a class="{% if request.endpoint == 'admin_users' %}active{% endif %}" href="{{ url_for('admin_users') }}">
+                            <span>♙</span> Users
+                        </a>
+
+                        <a class="{% if request.endpoint == 'admin_nominations' %}active{% endif %}" href="{{ url_for('admin_nominations') }}">
+                            <span>✦</span> Manage Nominations
+                        </a>
+
+                        <a class="{% if request.endpoint == 'admin_feedback' %}active{% endif %}" href="{{ url_for('admin_feedback') }}">
+                            <span>♡</span> Manage Feedback
+                        </a>
+
+                        <a class="{% if request.endpoint == 'admin_complaints' %}active{% endif %}" href="{{ url_for('admin_complaints') }}">
+                            <span>!</span> Manage Complaints
+                        </a>
+
+                        <a class="{% if request.endpoint == 'audit_logs' %}active{% endif %}" href="{{ url_for('audit_logs') }}">
+                            <span>≡</span> Audit Logs
+                        </a>
+
+                        <a class="{% if request.endpoint == 'reports' %}active{% endif %}" href="{{ url_for('reports') }}">
+                            <span>▤</span> Reports
+                        </a>
+
+                        <a class="{% if request.endpoint == 'admin_settings' %}active{% endif %}" href="{{ url_for('admin_settings') }}">
+                            <span>⚙</span> Settings
+                        </a>
+                    {% endif %}
+                </nav>
+
+                <div class="sidebar-bottom">
+                    <a href="{{ url_for('index') }}">← Home</a>
+                    <a href="{{ url_for('logout') }}" class="logout-link">↪ Logout</a>
+                </div>
+            </aside>
+
+            <div class="dashboard-area">
+                <header class="dashboard-topbar">
+                    <button class="menu-toggle" type="button" onclick="toggleSidebar()" aria-label="Open navigation">☰</button>
+                    <div>
+                        <span class="topbar-title">Online Voting System</span>
+                        <small>Secure &amp; simple election management</small>
+                    </div>
+                    <a href="{{ url_for('profile') }}" class="topbar-profile">
+                        <span class="avatar small">{{ session.name[:1]|upper }}</span>
+                        <span>{{ session.name }}</span>
+                    </a>
+                </header>
+
+                <main class="dashboard-content">
+    {% else %}
+        <header class="nav">
+            <a class="brand" href="{{ url_for('index') }}">Vote<span>Secure</span></a>
+            <nav>
+                <a href="{{ url_for('about') }}">About</a>
+                <a href="{{ url_for('how') }}">How It Works</a>
+                <a href="{{ url_for('contact') }}">Contact</a>
+                <a class="btn small" href="{{ url_for('login') }}">Login</a>
+            </nav>
+        </header>
+
+        <main class="container">
+    {% endif %}
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for cat, msg in messages %}
+            <div class="alert {{ cat }}">{{ msg }}</div>
+        {% endfor %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+
+    {% if current_user %}
+                </main>
+
+                <footer class="dashboard-footer">
+                    © 2026 VoteSecure · Secure college &amp; mini-club elections
+                </footer>
+            </div>
+        </div>
+    {% else %}
+        </main>
+
+        <footer>
+            © 2026 VoteSecure · Secure college &amp; mini-club elections
+        </footer>
+    {% endif %}
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{% extends 'base.html' %}{% block title %}OTP Verification{% endblock %}{% block content %}<div class="auth card">
+<h1>Verify OTP</h1>
+<p>Enter the six-digit OTP shown in the demo flash message/terminal.</p>
+<form method="post">
+    <input name="otp" maxlength="6" required>
+    <button class="btn">Verify</button>
+</form>
+</div>{% endblock %}

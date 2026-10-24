@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard · VoteSecure{% endblock %}
+
+{% block content %}
+<div class="page-head">
+    <div>
+        <p class="eyebrow">ADMINISTRATOR</p>
+        <h1>Control Center</h1>
+        <p class="muted">Manage users, elections, nominations, reports and system activity.</p>
+    </div>
+    <div class="page-actions">
+        <a class="btn" href="{{ url_for('admin_nominations') }}">Manage Nominations</a>
+        <a class="btn ghost" href="{{ url_for('reports') }}">View Reports</a>
+    </div>
+</div>
+
+<div class="grid four">
+    {% for k, v in stats.items() %}
+        <div class="stat">
+            <span>{{ k }}</span>
+            <strong>{{ v }}</strong>
+        </div>
+    {% endfor %}
+</div>
+
+<section class="card">
+    <div class="section-head">
+        <div>
+            <p class="eyebrow">ELECTION MANAGEMENT</p>
+            <h2>Create Election</h2>
+        </div>
+    </div>
+
+    <form class="grid four form-grid" method="post" action="{{ url_for('create_election') }}">
+        <label>
+            Election Title
+            <input name="title" placeholder="Enter election title" required>
+        </label>
+
+        <label>
+            Start Date &amp; Time
+            <input name="start_at" type="datetime-local" required>
+        </label>
+
+        <label>
+            End Date &amp; Time
+            <input name="end_at" type="datetime-local" required>
+        </label>
+
+        <label>
+            Status
+            <select name="status">
+                <option>Draft</option>
+                <option>Upcoming</option>
+                <option>Active</option>
+            </select>
+        </label>
+
+        <label class="full">
+            Description
+            <textarea name="description" placeholder="Describe the election"></textarea>
+        </label>
+
+        <div class="form-actions full">
+            <button class="btn" type="submit">Create Election</button>
+        </div>
+    </form>
+</section>
+
+<section class="card">
+    <div class="section-head">
+        <div>
+            <p class="eyebrow">LIFECYCLE</p>
+            <h2>Election Lifecycle</h2>
+        </div>
+        <a class="btn ghost small" href="{{ url_for('elections') }}">View All Elections</a>
+    </div>
+
+    {% for e in elections %}
+        <div class="list election-row">
+            <div>
+                <b>{{ e.title }}</b>
+                <small>{{ e.status }} · {{ e.start_at }} → {{ e.end_at }}</small>
+            </div>
+
+            <form method="post" action="{{ url_for('update_election_status', eid=e.id) }}">
+                <label class="sr-only" for="status-{{ e.id }}">Election status</label>
+                <select id="status-{{ e.id }}" name="status" onchange="this.form.submit()">
+                    {% for s in ['Draft', 'Upcoming', 'Active', 'Closed', 'Result Published', 'Archived'] %}
+                        <option {% if s == e.status %}selected{% endif %}>{{ s }}</option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <h3>No elections yet</h3>
+            <p>Create your first election using the form above.</p>
+        </div>
+    {% endfor %}
+</section>
+{% endblock %}

@@ -1,0 +1,14 @@
+-- MySQL starting schema. The Flask demo uses SQLite by default for zero-configuration execution.
+CREATE DATABASE IF NOT EXISTS online_voting;
+USE online_voting;
+CREATE TABLE users(id INT AUTO_INCREMENT PRIMARY KEY,name VARCHAR(120) NOT NULL,email VARCHAR(190) UNIQUE NOT NULL,password_hash VARCHAR(255) NOT NULL,role ENUM('voter','candidate','admin') NOT NULL,phone VARCHAR(30),language VARCHAR(30) DEFAULT 'English',accessibility BOOLEAN DEFAULT FALSE,is_active BOOLEAN DEFAULT TRUE,created_at DATETIME NOT NULL);
+CREATE TABLE elections(id INT AUTO_INCREMENT PRIMARY KEY,title VARCHAR(200) NOT NULL,description TEXT,start_at DATETIME NOT NULL,end_at DATETIME NOT NULL,status VARCHAR(30) NOT NULL,created_by INT,created_at DATETIME NOT NULL,FOREIGN KEY(created_by) REFERENCES users(id));
+CREATE TABLE nominations(id INT AUTO_INCREMENT PRIMARY KEY,candidate_id INT NOT NULL,election_id INT NOT NULL,manifesto TEXT,status VARCHAR(30) DEFAULT 'Pending',submitted_at DATETIME NOT NULL,UNIQUE KEY uq_nom(candidate_id,election_id),FOREIGN KEY(candidate_id) REFERENCES users(id),FOREIGN KEY(election_id) REFERENCES elections(id));
+CREATE TABLE votes(id INT AUTO_INCREMENT PRIMARY KEY,election_id INT NOT NULL,candidate_id INT NOT NULL,voter_id INT NOT NULL,cast_at DATETIME NOT NULL,receipt_code VARCHAR(100) UNIQUE NOT NULL,UNIQUE KEY uq_vote(election_id,voter_id),FOREIGN KEY(election_id) REFERENCES elections(id),FOREIGN KEY(candidate_id) REFERENCES users(id),FOREIGN KEY(voter_id) REFERENCES users(id));
+CREATE TABLE notifications(id INT AUTO_INCREMENT PRIMARY KEY,user_id INT,title VARCHAR(200) NOT NULL,message TEXT NOT NULL,is_read BOOLEAN DEFAULT FALSE,created_at DATETIME NOT NULL,FOREIGN KEY(user_id) REFERENCES users(id));
+CREATE TABLE feedback(id INT AUTO_INCREMENT PRIMARY KEY,user_id INT,rating INT,category VARCHAR(100),message TEXT NOT NULL,status VARCHAR(30) DEFAULT 'New',created_at DATETIME NOT NULL,FOREIGN KEY(user_id) REFERENCES users(id));
+CREATE TABLE complaints(id INT AUTO_INCREMENT PRIMARY KEY,user_id INT,subject VARCHAR(200) NOT NULL,message TEXT NOT NULL,status VARCHAR(30) DEFAULT 'Open',created_at DATETIME NOT NULL,FOREIGN KEY(user_id) REFERENCES users(id));
+CREATE TABLE audit_logs(id INT AUTO_INCREMENT PRIMARY KEY,user_id INT,action VARCHAR(120) NOT NULL,entity VARCHAR(80),entity_id INT,ip_address VARCHAR(80),created_at DATETIME NOT NULL,FOREIGN KEY(user_id) REFERENCES users(id));
+CREATE TABLE otp_verifications(id INT AUTO_INCREMENT PRIMARY KEY,user_id INT,otp VARCHAR(10) NOT NULL,purpose VARCHAR(50) NOT NULL,expires_at DATETIME NOT NULL,used BOOLEAN DEFAULT FALSE,FOREIGN KEY(user_id) REFERENCES users(id));
+CREATE TABLE password_resets(id INT AUTO_INCREMENT PRIMARY KEY,user_id INT,token VARCHAR(150) UNIQUE NOT NULL,expires_at DATETIME NOT NULL,used BOOLEAN DEFAULT FALSE,FOREIGN KEY(user_id) REFERENCES users(id));
+CREATE TABLE settings(`key` VARCHAR(100) PRIMARY KEY,`value` TEXT);
